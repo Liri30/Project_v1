@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "682140282127",
+    "firebase_url": "https://recuerdos-ae920.firebaseio.com",
+    "project_id": "recuerdos-ae920",
+    "storage_bucket": "recuerdos-ae920.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682140282127:android:dbef1f3bf571ec16",
+        "android_client_info": {
+          "package_name": "com.learning.manuelliriano.project_v1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682140282127-oo6l5d0v3moe22ajpq3g0phbpocuk9g2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsOyBtk6YEbfXkPSFwBuPSc2VRuKXjNjk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682140282127-oo6l5d0v3moe22ajpq3g0phbpocuk9g2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
