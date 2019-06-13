@@ -30,6 +30,13 @@ dependencies {
 //    implementation 'com.google.firebase:firebase-auth:11.6.0'
 // https://mvnrepository.com/artifact/com.google.firebase/firebase-auth
     implementation group: 'com.google.firebase', name: 'firebase-auth', version: '17.0.0'
+    implementation 'com.google.firebase:firebase-database:16.1.0'
+
+    // https://mvnrepository.com/artifact/com.google.firebase/firebase-storage
+//    implementation group: 'com.google.firebase', name: 'firebase-storage', version: '17.0.0'
+
+    implementation 'com.google.firebase:firebase-storage:16.1.0'
+
 
 
     // https://mvnrepository.com/artifact/com.google.firebase/firebase-database
