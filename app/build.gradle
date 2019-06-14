@@ -9,6 +9,15 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
+
+        packagingOptions{
+            exclude 'META-INF/LICENSE'
+            exclude 'META-INF/LICENSE-FIREBASE.txt'
+            exclude 'META-INF/NOTICE'
+
+        }
     }
     buildTypes {
         release {
@@ -16,7 +25,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -37,11 +48,10 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-storage:16.1.0'
 
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
+     implementation 'com.android.support:multidex:1.0.1'
 
-    // https://mvnrepository.com/artifact/com.google.firebase/firebase-database
-    /* compile group: 'com.google.firebase', name: 'firebase-database', version: '17.0.0'
-    compile group: 'com.google.firebase', name: 'firebase-core', version: '16.0.9'*/
 }
 
 apply plugin: 'com.google.gms.google-services'

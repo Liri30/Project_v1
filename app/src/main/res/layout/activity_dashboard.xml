@@ -6,32 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".DashboardActivity">
 
-    <LinearLayout
-        android:id="@+id/layout_button"
-        android:orientation="horizontal"
-        android:layout_alignParentTop="true"
-        android:weightSum="2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btnChoose"
-            android:text="Choose"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/btnUpload"
-            android:text="Upload"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_button"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <Button
+                android:id="@+id/btnChoose"
+                android:text="Choose"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnUpload"
+                android:text="Upload"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="137dp" />
 
 </android.support.constraint.ConstraintLayout>

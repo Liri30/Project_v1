@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,30 +20,30 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
 public class DashboardActivity extends AppCompatActivity {
 
-private Button btnChoose, btnUpload;
-private ImageView imageView;
+    private Button btnChoose, btnUpload;
+    private ImageView imageView;
 
-private Uri filePath;
+    private Uri filePath;
 
-private final int PICK_IMAGE_REQUEST=71;
-FirebaseStorage storage;
-StorageReference storageReference;
+    //Firebase
+    FirebaseStorage storage;
+    StorageReference storageReference;
 
+    private final int PICK_IMAGE_REQUEST = 71;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_dashboard2);
 
-        initializeViews();
-
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        //Initialize Views
+        btnChoose = (Button) findViewById(R.id.btnChoose);
+        btnUpload = (Button) findViewById(R.id.btnUpload);
+        imageView = (ImageView) findViewById(R.id.imgView);
 
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,10 +58,9 @@ StorageReference storageReference;
                 uploadImage();
             }
         });
-
     }
 
-    private void chooseImage(){
+    private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -72,25 +70,25 @@ StorageReference storageReference;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==PICK_IMAGE_REQUEST && resultCode==RESULT_OK
-            && data!=null && data.getData() != null){
-
-            filePath=data.getData();
-            try{
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            filePath = data.getData();
+            try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
     }
 
+    private void uploadImage() {
 
-    private void uploadImage(){
-
-        if (filePath!=null){
+        if(filePath != null)
+        {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
@@ -100,32 +98,25 @@ StorageReference storageReference;
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                       progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            Toast.makeText(DashboardActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(),"Failed", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress =(100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                            .getTotalByteCount());
-                    progressDialog.setMessage("Uploaded"+(int)progress+"%");
-                }
-            });
-
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(DashboardActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
         }
-    }
-
-    public void initializeViews(){
-        //initialize Views
-        btnChoose=(Button) findViewById(R.id.btnChoose);
-        btnUpload=(Button) findViewById(R.id.btnUpload);
-        imageView=(ImageView) findViewById(R.id.imgView);
     }
 }
