@@ -3,7 +3,6 @@ package com.learning.manuelliriano.project_v1;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,6 +15,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,17 +27,22 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-public class DashboardActivity extends AppCompatActivity {
+public class Galeria extends AppCompatActivity implements RecyclerViewAdapter.Listener {
 
     private Button btnChoose, btnUpload;
     private ImageView imageView;
@@ -51,17 +57,26 @@ public class DashboardActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private LocationManager locationManager;
 
-//    private Location location;
+    //    private Location location;
     //para identificar el request de los permisos
     private static final int REQUEST_LOCATION_PERMISSION = 1000;
 
     private final int PICK_IMAGE_REQUEST = 71;
 
+    RecyclerViewAdapter recyclerViewAdapter;
+    private DatabaseReference imagenes;
+    private FirebaseDatabase firebaseDatebaseInstacia;
+
+    List<ImageUploadInfo> listadoImagenes = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard2);
+        setContentView(R.layout.activity_galeria);
 
+        if(FirebaseAuth.getInstance().getCurrentUser()==null){
+            openActivity(new Intent(this, LoginActivity.class));
+        }
         //Initialize Views
         btnChoose = (Button) findViewById(R.id.btnChoose);
         btnUpload = (Button) findViewById(R.id.btnUpload);
@@ -90,7 +105,70 @@ public class DashboardActivity extends AppCompatActivity {
                 uploadImage();
             }
         });
+
+
+
+        initializeUI();
+        readData();
+
+
+
+        recyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(),listadoImagenes,this);
+        RecyclerView rv= findViewById(R.id.recycler_view);
+        rv.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        rv.setAdapter(recyclerViewAdapter);
     }
+    private void readData(){
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
+                    listadoImagenes.add(imageUploadInfo);
+                }
+
+                recyclerViewAdapter.setListadoProyectos(listadoImagenes);
+                recyclerViewAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("ERROR", "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        imagenes.addValueEventListener(postListener);
+    }
+
+    @Override
+    public void onClick(ImageUploadInfo imageUploadInfo) {
+        Intent intent = new Intent(Galeria.this, ImagenActivity.class);
+        intent.putExtra("idImagen",imageUploadInfo.getId());
+        startActivity(intent);
+    }
+    private void openActivity(Intent intent){
+        startActivity(intent);
+    }
+
+    public void cerrarSesion(View view){
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        openActivity(intent);
+        finish();
+        openActivity(new Intent(this, MainActivity.class));
+    }
+
+    private void initializeUI() {
+        firebaseDatebaseInstacia = FirebaseDatabase.getInstance();
+        imagenes = firebaseDatebaseInstacia.getReference("ImageUpload");
+
+    }
+
 
     private void chooseImage() {
         Intent intent = new Intent();
@@ -124,20 +202,20 @@ public class DashboardActivity extends AppCompatActivity {
             String idImage = "";
             idImage = UUID.randomUUID().toString();
 
-            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+            StorageReference ref = storageReference.child("images/" + idImage);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(DashboardActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Galeria.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(DashboardActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Galeria.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -183,7 +261,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     //mostrar el location en el textview
     private void showLocation(Location location){
-       // textView.setText(String.format("%s,%s", location.getLatitude(), location.getLongitude()));
+        // textView.setText(String.format("%s,%s", location.getLatitude(), location.getLongitude()));
     }
 
     //mostrar la ultima ubicacion

@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
 
                             //Intent
-                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, Galeria.class);
                             startActivity(intent);
                         }
                         else{

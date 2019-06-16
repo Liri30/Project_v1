@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:padding="5dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="329dp"
+                android:layout_height="wrap_content"
+                android:text="Santo Domingo"
+                android:textColor="@color/colorPrimary" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/my_image"
+                android:src="@mipmap/ic_launcher" />
+
+
+            <TextView
+                android:id="@+id/my_description"
+                android:layout_width="329dp"
+                android:layout_height="wrap_content"
+                android:text="Comentario"
+                android:textColor="@color/colorPrimary" />
+
+        </TableLayout>
+
+
+
+
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>
