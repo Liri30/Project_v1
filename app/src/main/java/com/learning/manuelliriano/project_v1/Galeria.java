@@ -75,7 +75,7 @@ public class Galeria extends AppCompatActivity implements RecyclerViewAdapter.Li
         setContentView(R.layout.activity_galeria);
 
         if(FirebaseAuth.getInstance().getCurrentUser()==null){
-            openActivity(new Intent(this, LoginActivity.class));
+            openActivity(new Intent(this, MainActivity.class));
         }
         //Initialize Views
         btnChoose = (Button) findViewById(R.id.btnChoose);

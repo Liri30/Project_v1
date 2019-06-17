@@ -6,20 +6,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Galeria">
+
+    <EditText
+        android:id="@+id/edit_comentario"
+        android:hint="Comentario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <LinearLayout
         android:id="@+id/layout_button"
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
-        android:weightSum="5"
+        android:weightSum="2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/edit_comentario"
-            android:hint="Comentario"
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="wrap_content" />
         <Button
             android:id="@+id/btnChoose"
             android:text="Choose"

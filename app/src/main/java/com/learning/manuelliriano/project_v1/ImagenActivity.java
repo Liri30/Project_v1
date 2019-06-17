@@ -63,7 +63,7 @@ public class ImagenActivity extends AppCompatActivity {
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Oferta de trabajo!");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, imageUploadInfo.getComentario());
-                startActivity(Intent.createChooser(sharingIntent, "Shearing Option"));
+                startActivity(Intent.createChooser(sharingIntent, "Sharing Option"));
                 return true;
 
             default:
